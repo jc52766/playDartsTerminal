@@ -172,7 +172,12 @@ class DartsGame:
                 break
                 
             print(f"\nDart {dart + 1}/3")
-            user_input = input("What are you aiming for? (e.g., t20, d19, s16, ob, db): ").strip()
+            user_input = input("What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: ").strip()
+            
+            # Default to t20 if empty input
+            if not user_input:
+                user_input = "t20"
+                print("Aiming for t20 (default)")
             
             # Parse input
             parsed = self.parse_input(user_input)

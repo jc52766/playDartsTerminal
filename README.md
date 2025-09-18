@@ -29,6 +29,7 @@ python3 darts_game.py
 - **Triples**: `t20` (triple 20 = 60 points)
 - **Outer Bull**: `ob` (25 points)
 - **Double Bull**: `db` (50 points)
+- **Default**: Just press Enter to aim for `t20` (most common target)
 
 ### Game Rules
 - Start with 501 points
