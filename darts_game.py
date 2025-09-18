@@ -16,12 +16,8 @@ class DartsGame:
         # Create adjacency mapping for realistic misses
         self.adjacency = self._create_adjacency_map()
         
-        # Accuracy rates
-        self.accuracy = {
-            'single': 0.80,
-            'double': 0.15,
-            'triple': 0.10
-        }
+        # Get accuracy rates from user
+        self.accuracy = self._get_accuracy_settings()
         
         # Game state
         self.score = 501
@@ -37,6 +33,69 @@ class DartsGame:
             right_neighbor = self.segments[(i + 1) % len(self.segments)]
             adjacency[segment] = [left_neighbor, right_neighbor]
         return adjacency
+    
+    def _get_accuracy_settings(self) -> Dict[str, float]:
+        """Get accuracy settings from user input"""
+        print("🎯 Accuracy Settings")
+        print("Enter your accuracy percentages (1-100) or press Enter for defaults:")
+        
+        # Get singles accuracy
+        while True:
+            singles_input = input("Singles accuracy % [default: 80]: ").strip()
+            if not singles_input:
+                singles_accuracy = 80
+                break
+            try:
+                singles_accuracy = float(singles_input)
+                if 1 <= singles_accuracy <= 100:
+                    break
+                else:
+                    print("Please enter a value between 1 and 100")
+            except ValueError:
+                print("Please enter a valid number")
+        
+        # Get doubles accuracy
+        while True:
+            doubles_input = input("Doubles accuracy % [default: 15]: ").strip()
+            if not doubles_input:
+                doubles_accuracy = 15
+                break
+            try:
+                doubles_accuracy = float(doubles_input)
+                if 1 <= doubles_accuracy <= 100:
+                    break
+                else:
+                    print("Please enter a value between 1 and 100")
+            except ValueError:
+                print("Please enter a valid number")
+        
+        # Get triples accuracy
+        while True:
+            triples_input = input("Triples accuracy % [default: 10]: ").strip()
+            if not triples_input:
+                triples_accuracy = 10
+                break
+            try:
+                triples_accuracy = float(triples_input)
+                if 1 <= triples_accuracy <= 100:
+                    break
+                else:
+                    print("Please enter a value between 1 and 100")
+            except ValueError:
+                print("Please enter a valid number")
+        
+        # Convert to decimal and display confirmation
+        accuracy_dict = {
+            'single': singles_accuracy / 100,
+            'double': doubles_accuracy / 100,
+            'triple': triples_accuracy / 100
+        }
+        
+        print(f"\nAccuracy settings confirmed:")
+        print(f"Singles: {singles_accuracy}% | Doubles: {doubles_accuracy}% | Triples: {triples_accuracy}%")
+        print("=" * 50)
+        
+        return accuracy_dict
     
     def parse_input(self, user_input: str) -> Optional[Tuple[str, int]]:
         """Parse user input like 't20', 'd19', 's16', 'ob', 'db'"""
@@ -127,8 +186,9 @@ class DartsGame:
             # Less likely to accidentally hit double/triple when aiming for single
             miss_options.append(('single', target_number, target_number))
         
-        # Add complete miss
-        miss_options.append(('miss', 0, 0))
+        # Add complete miss only for doubles (narrow outer ring, easier to miss entirely)
+        if target_type == 'double':
+            miss_options.append(('miss', 0, 0))
         
         return random.choice(miss_options)
     

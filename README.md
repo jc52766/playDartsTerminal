@@ -5,8 +5,9 @@ A realistic terminal-based darts simulation game that follows proper 501 darts r
 ## Features
 
 - **Authentic 501 Darts Rules**: Start with 501 points, must finish on a double
-- **Realistic Accuracy Simulation**: Different hit rates for singles (80%), doubles (15%), and triples (10%)
+- **Customizable Accuracy**: Set your own accuracy percentages for singles, doubles, and triples
 - **Smart Miss Patterns**: When you miss, you hit nearby segments on the dartboard (not random areas)
+- **Realistic Miss Logic**: Singles and triples never miss the board entirely (only doubles can)
 - **Proper Turn Management**: 3 darts per turn with bust detection
 - **Input Validation**: Invalid inputs don't consume darts - you can re-enter your aim
 - **Complete Game Flow**: Score tracking, turn summaries, and win conditions
@@ -41,16 +42,19 @@ python3 darts_game.py
 
 ## Game Mechanics
 
-### Accuracy Rates
-- **Singles**: 80% chance to hit what you aim for
-- **Doubles**: 15% chance to hit what you aim for  
-- **Triples**: 10% chance to hit what you aim for
+### Customizable Accuracy Settings
+At game start, you can set your own accuracy percentages (1-100%) for each target type:
+- **Singles accuracy**: How often you hit singles when aiming for them [default: 80%]
+- **Doubles accuracy**: How often you hit doubles when aiming for them [default: 15%]
+- **Triples accuracy**: How often you hit triples when aiming for them [default: 10%]
 
-### Realistic Misses
+Simply press Enter to use the defaults, or enter your own percentages to customize the difficulty.
+
+### Realistic Miss Patterns
 When you miss your target, the game simulates realistic dart throws:
 - **Adjacent Segments**: Most likely to hit segments next to your target (e.g., aiming for 20 might hit 1 or 5)
 - **Same Segment Different Multiplier**: Might hit single 20 when aiming for triple 20
-- **Complete Miss**: Occasionally miss the board entirely
+- **Complete Miss**: Only possible when aiming for doubles (narrow outer ring) or bulls - singles and triples always hit something on the board
 
 ### Dartboard Layout
 The dartboard segments in clockwise order: 20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5
@@ -58,6 +62,15 @@ The dartboard segments in clockwise order: 20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3
 ## Example Gameplay
 
 ```
+🎯 Accuracy Settings
+Enter your accuracy percentages (1-100) or press Enter for defaults:
+Singles accuracy % [default: 80]: 
+Doubles accuracy % [default: 15]: 
+Triples accuracy % [default: 10]: 
+
+Accuracy settings confirmed:
+Singles: 80% | Doubles: 15% | Triples: 10%
+==================================================
 🎯 Welcome to Terminal Darts - 501!
 Rules: Start with 501 points, finish on a double, 3 darts per turn
 Input format: t20 (triple 20), d19 (double 19), s16 (single 16)
@@ -68,21 +81,24 @@ Special: ob (outer bull = 25), db (double bull = 50)
 Current score: 501
 
 Dart 1/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db): t20
+What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: 
+Aiming for t20 (default)
 You aimed for Triple 20 but hit Single 20 for 20 points.
 Score remaining: 481
 
 Dart 2/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db): t60
+What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: t60
 Invalid input! Use format like: t20, d19, s16, ob, db
 
 Dart 2/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db): t20
+What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: 
+Aiming for t20 (default)
 Great shot! You hit Triple 20 for 60 points!
 Score remaining: 421
 
 Dart 3/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db): t20
+What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: 
+Aiming for t20 (default)
 You aimed for Triple 20 but hit Single 1 for 1 points.
 Score remaining: 420
 
@@ -94,42 +110,24 @@ Press Enter to continue to next turn...
 Current score: 420
 
 Dart 1/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db): t20
-You aimed for Triple 20 but hit Single 5 for 5 points.
+What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: d20
+You aimed for Double 20 but hit Single 5 for 5 points.
 Score remaining: 415
 
 Dart 2/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db): t20
-Miss! You aimed for t20 but missed the board entirely.
+What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: d20
+Miss! You aimed for d20 but missed the board entirely.
 Score remaining: 415
 
 Dart 3/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db): t19
-You aimed for Triple 19 but hit Single 19 for 19 points.
-Score remaining: 396
+What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: 
+Aiming for t20 (default)
+You aimed for Triple 20 but hit Single 5 for 5 points.
+Score remaining: 410
 
-Turn summary: Single 5 (5) | Miss (0) | Single 19 (19)
-
-Press Enter to continue to next turn...
-
---- Turn 3 ---
-Current score: 396
-
-Dart 1/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db): s1
-BUST! Score would go to 395. Turn over.
-
-Turn summary:
+Turn summary: Single 5 (5) | Miss (0) | Single 5 (5)
 
 Press Enter to continue to next turn...
-
---- Turn 4 ---
-Current score: 396
-
-Dart 1/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db): d20
-You aimed for Double 20 but hit Single 20 for 20 points.
-Score remaining: 376
 
 ...continuing until you reach a finishable score...
 
@@ -137,7 +135,7 @@ Score remaining: 376
 Current score: 32
 
 Dart 1/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db): d16
+What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: d16
 Great shot! You hit Double 16 for 32 points!
 
 🎯 GAME OVER! You finished with Double 16!
@@ -148,11 +146,13 @@ Thanks for playing!
 
 ## Key Features Demonstrated
 
-1. **Invalid Input Handling**: Notice how `t60` was rejected and didn't consume a dart
-2. **Realistic Misses**: Aiming for `t20` hit `s1` (adjacent segment) and `s5` (adjacent segment)
-3. **Accuracy Simulation**: Mix of hits and misses based on target difficulty
-4. **Bust Detection**: Attempting `s1` with 396 remaining would leave 395 (can't finish)
-5. **Double Finish**: Game ends only when finishing on a double
+1. **Customizable Accuracy**: Shows the accuracy setup at game start
+2. **Default t20 Target**: Notice the "[default: t20]" prompt and "Aiming for t20 (default)" messages
+3. **Invalid Input Handling**: Notice how `t60` was rejected and didn't consume a dart
+4. **Realistic Misses**: Aiming for `t20` hit `s1` (adjacent segment) and `s5` (adjacent segment) - no complete misses for triples
+5. **Complete Miss Only for Doubles**: Notice the miss only occurred when aiming for `d20` (double)
+6. **Bust Detection**: Game properly handles scoring and win conditions
+7. **Double Finish**: Game ends only when finishing on a double
 
 ## Technical Implementation
 
