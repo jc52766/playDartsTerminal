@@ -221,26 +221,23 @@ class DartsGame:
         turn_start_score = self.score
         turn_results = []
         
-        print(f"\n--- Turn {(self.darts_thrown // 3) + 1} ---")
-        print(f"Current score: {self.score}")
+        print(f"\nTurn {(self.darts_thrown // 3) + 1} | Score: {self.score}")
         
         dart = 0
         while dart < 3:
             if self.game_over:
                 break
                 
-            print(f"\nDart {dart + 1}/3")
-            user_input = input("What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: ").strip()
+            user_input = input(f"Dart {dart + 1}: ").strip()
             
             # Default to t20 if empty input
             if not user_input:
                 user_input = "t20"
-                print("Aiming for t20 (default)")
             
             # Parse input
             parsed = self.parse_input(user_input)
             if not parsed:
-                print("Invalid input! Use format like: t20, d19, s16, ob, db")
+                print("Invalid! Use: t20, d19, s16, ob, db")
                 continue  # Don't increment dart counter, just ask again
             
             target_type, target_number = parsed
@@ -250,24 +247,27 @@ class DartsGame:
             
             # Display result
             if hit_type == 'miss':
-                print(f"Miss! You aimed for {user_input} but missed the board entirely.")
-                turn_results.append("Miss (0)")
+                result_str = f"{user_input} → MISS (0)"
+                turn_results.append("MISS (0)")
             else:
-                hit_description = self._format_hit(hit_type, hit_number)
+                hit_short = self._format_hit_short(hit_type, hit_number)
                 if (hit_type, hit_number) == (target_type, target_number):
-                    print(f"Great shot! You hit {hit_description} for {points} points!")
+                    result_str = f"{user_input} → {hit_short} ({points})"
                 else:
-                    target_description = self._format_hit(target_type, target_number)
-                    print(f"You aimed for {target_description} but hit {hit_description} for {points} points.")
+                    result_str = f"{user_input} → {hit_short} ({points})"
                 
-                turn_results.append(f"{hit_description} ({points})")
+                turn_results.append(f"{hit_short} ({points})")
             
             # Apply score
             if points > 0:
                 if not self.apply_score(hit_type, hit_number, points):
-                    print(f"BUST! Score would go to {self.score - points}. Turn over.")
+                    print(f"{result_str} | BUST! → {turn_start_score}")
                     self.score = turn_start_score  # Reset to start of turn
                     break
+                else:
+                    print(f"{result_str} | {self.score}")
+            else:
+                print(f"{result_str} | {self.score}")
             
             self.darts_thrown += 1
             dart += 1  # Only increment dart counter after successful throw
@@ -275,20 +275,25 @@ class DartsGame:
             # Check for win
             if self.score == 0:
                 self.game_over = True
-                print(f"\n🎯 GAME OVER! You finished with {hit_description}!")
-                print(f"Total darts thrown: {self.darts_thrown}")
+                print(f"\n🎯 GAME OVER! Finished with {hit_short}! ({self.darts_thrown} darts)")
                 break
-            
-            print(f"Score remaining: {self.score}")
         
         # Turn summary
-        print(f"\nTurn summary: {' | '.join(turn_results)}")
+        if not self.game_over:
+            print(f"Turn: {' | '.join(turn_results)}")
+            
+            if self.score <= 170:
+                if self.is_valid_finish(self.score):
+                    print(f"Can finish: {self.score}")
+                else:
+                    print(f"Difficult: {self.score}")
+    def _format_hit_short(self, hit_type: str, hit_number: int) -> str:
+        """Format hit for concise display"""
+        if hit_number == 25:
+            return "DB" if hit_type == 'double' else "OB"
         
-        if not self.game_over and self.score <= 170:
-            if self.is_valid_finish(self.score):
-                print(f"You can finish! Score: {self.score}")
-            else:
-                print(f"Difficult finish - Score: {self.score}")
+        type_map = {'single': 'S', 'double': 'D', 'triple': 'T'}
+        return f"{type_map[hit_type]}{hit_number}"
     
     def _format_hit(self, hit_type: str, hit_number: int) -> str:
         """Format hit for display"""
