@@ -17,7 +17,6 @@ A realistic terminal-based darts simulation game that follows proper 501 darts r
 
 [![asciicast](https://asciinema.org/a/dgUz4EPjfRp7zdTGJ76Qzk7Y1.svg)](https://asciinema.org/a/dgUz4EPjfRp7zdTGJ76Qzk7Y1)
 
-*Click to watch the interactive terminal recording - showing accuracy setup, gameplay flow, and scoring*
 
 ## Installation & Running
 
@@ -131,32 +130,6 @@ The game uses a clean, streamlined output format:
 - **OB** = Outer Bull (25 points)
 - **DB** = Double Bull (50 points)
 - **MISS** = Complete miss (0 points)
-
-## Key Features Demonstrated
-
-1. **Customizable Accuracy**: Shows the accuracy setup at game start
-2. **Streamlined Interface**: Clean `Dart 1:` prompts instead of verbose text
-3. **Concise Results**: `t20 → S20 (20) | 481` format shows everything at a glance
-4. **Invalid Input Handling**: Notice how `t60` was rejected and didn't consume a dart
-5. **Realistic Bull Misses**: Aiming for `db` hit `S14` (random single when missing bull region entirely)
-6. **Complete Miss Only for Doubles**: Notice the miss only occurred when aiming for `d20` (double)
-7. **Double Bull Finish**: Game can be finished with Double Bull (50 points) as shown in the example
-8. **Bust Detection**: Game properly handles scoring and win conditions
-9. **Smart Finish Status**: Only shows finish status for scores 2-170; high scores like 321 don't show confusing messages
-
-## Technical Implementation
-
-- **Python 3.6+** with type hints
-- **Dartboard Model**: Accurate segment adjacency mapping
-- **Probability Engine**: Weighted random selection for realistic gameplay
-- **Input Parsing**: Regex-based validation with clear error messages
-- **Game State Management**: Proper score tracking and turn management
-- **Realistic Bull Physics**: Two-tier miss system for bulls (close miss vs complete miss of bull region)
-- **Complete Finish Logic**: Correctly identifies all valid finishes (even numbers 2-40 and Double Bull 50)
-
-## Contributing
-
-Feel free to submit issues or pull requests to improve the game!
 
 ## License
 
