@@ -175,14 +175,29 @@ class DartsGame:
                 ('single', target_number, target_number),
                 ('single', target_number, target_number),  # More likely to hit single
             ])
+            # Add neighboring triples (realistic miss when aiming for triple)
+            for adj_segment in self.adjacency[target_number]:
+                miss_options.append(('triple', adj_segment, adj_segment * 3))
         elif target_type == 'double':
             miss_options.extend([
                 ('single', target_number, target_number),
                 ('single', target_number, target_number),
             ])
+            # Add neighboring doubles (realistic miss when aiming for double)
+            for adj_segment in self.adjacency[target_number]:
+                miss_options.append(('double', adj_segment, adj_segment * 2))
         elif target_type == 'single':
-            # Less likely to accidentally hit double/triple when aiming for single
-            miss_options.append(('single', target_number, target_number))
+            # When aiming for single, can accidentally hit double/triple of same segment
+            miss_options.extend([
+                ('double', target_number, target_number * 2),  # Accidentally hit double
+                ('triple', target_number, target_number * 3),  # Accidentally hit triple
+            ])
+            # Also add adjacent segments with all multipliers
+            for adj_segment in self.adjacency[target_number]:
+                miss_options.extend([
+                    ('double', adj_segment, adj_segment * 2),
+                    ('triple', adj_segment, adj_segment * 3),
+                ])
         
         # Add complete miss only for doubles (narrow outer ring, easier to miss entirely)
         if target_type == 'double':
