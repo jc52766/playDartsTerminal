@@ -11,6 +11,7 @@ A realistic terminal-based darts simulation game that follows proper 501 darts r
 - **Proper Turn Management**: 3 darts per turn with bust detection
 - **Input Validation**: Invalid inputs don't consume darts - you can re-enter your aim
 - **Complete Game Flow**: Score tracking, turn summaries, and win conditions
+- **Streamlined Output**: Clean, concise display that's easy to follow
 
 ## Installation & Running
 
@@ -36,7 +37,7 @@ python3 darts_game.py
 - Start with 501 points
 - Each turn consists of up to 3 darts
 - Subtract your score from 501
-- Must finish exactly on 0 with a double
+- Must finish exactly on 0 with a double (regular doubles d1-d20 or Double Bull db)
 - **Bust conditions**: Score goes below 0 or lands on exactly 1
 - When you bust, your score resets to what it was at the start of the turn
 
@@ -54,7 +55,8 @@ Simply press Enter to use the defaults, or enter your own percentages to customi
 When you miss your target, the game simulates realistic dart throws:
 - **Adjacent Segments**: Most likely to hit segments next to your target (e.g., aiming for 20 might hit 1 or 5)
 - **Same Segment Different Multiplier**: Might hit single 20 when aiming for triple 20
-- **Complete Miss**: Only possible when aiming for doubles (narrow outer ring) or bulls - singles and triples always hit something on the board
+- **Bulls Miss Logic**: When missing bulls, you either hit the other bull (close miss) or any random single 1-20 (complete miss of bull region)
+- **Complete Miss**: Only possible when aiming for regular doubles (narrow outer ring)
 
 ### Dartboard Layout
 The dartboard segments in clockwise order: 20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5
@@ -77,82 +79,71 @@ Input format: t20 (triple 20), d19 (double 19), s16 (single 16)
 Special: ob (outer bull = 25), db (double bull = 50)
 ==================================================
 
---- Turn 1 ---
-Current score: 501
-
-Dart 1/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: 
-Aiming for t20 (default)
-You aimed for Triple 20 but hit Single 20 for 20 points.
-Score remaining: 481
-
-Dart 2/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: t60
-Invalid input! Use format like: t20, d19, s16, ob, db
-
-Dart 2/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: 
-Aiming for t20 (default)
-Great shot! You hit Triple 20 for 60 points!
-Score remaining: 421
-
-Dart 3/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: 
-Aiming for t20 (default)
-You aimed for Triple 20 but hit Single 1 for 1 points.
-Score remaining: 420
-
-Turn summary: Single 20 (20) | Triple 20 (60) | Single 1 (1)
+Turn 1 | Score: 501
+Dart 1: t20 → S20 (20) | 481
+Dart 2: t60
+Invalid! Use: t20, d19, s16, ob, db
+Dart 2: t20 → T20 (60) | 421
+Dart 3: t20 → S1 (1) | 420
+Turn: S20 (20) | T20 (60) | S1 (1)
 
 Press Enter to continue to next turn...
 
---- Turn 2 ---
-Current score: 420
+Turn 2 | Score: 420
+Dart 1: d20 → S5 (5) | 415
+Dart 2: d20 → MISS (0) | 415
+Dart 3: t20 → S5 (5) | 410
+Turn: S5 (5) | MISS (0) | S5 (5)
 
-Dart 1/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: d20
-You aimed for Double 20 but hit Single 5 for 5 points.
-Score remaining: 415
+Press Enter to continue to next turn...
 
-Dart 2/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: d20
-Miss! You aimed for d20 but missed the board entirely.
-Score remaining: 415
-
-Dart 3/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: 
-Aiming for t20 (default)
-You aimed for Triple 20 but hit Single 5 for 5 points.
-Score remaining: 410
-
-Turn summary: Single 5 (5) | Miss (0) | Single 5 (5)
+Turn 3 | Score: 410
+Dart 1: db → S14 (14) | 396
+Dart 2: db → OB (25) | 371
+Dart 3: ob → DB (50) | 321
+Turn: S14 (14) | OB (25) | DB (50)
+Difficult: 321
 
 Press Enter to continue to next turn...
 
 ...continuing until you reach a finishable score...
 
---- Turn 15 ---
-Current score: 32
+Turn 12 | Score: 50
+Dart 1: db → DB (50) | 0
 
-Dart 1/3
-What are you aiming for? (e.g., t20, d19, s16, ob, db) [default: t20]: d16
-Great shot! You hit Double 16 for 32 points!
-
-🎯 GAME OVER! You finished with Double 16!
-Total darts thrown: 43
+🎯 GAME OVER! Finished with DB! (36 darts)
 
 Thanks for playing!
 ```
 
+## Output Format Guide
+
+The game uses a clean, streamlined output format:
+
+### Hit Display Format
+- `t20 → S20 (20) | 481` = Aimed for triple 20, hit single 20 for 20 points, score now 481
+- `d20 → MISS (0) | 415` = Aimed for double 20, missed entirely, score remains 415
+- `db → S14 (14) | 396` = Aimed for double bull, hit single 14, score now 396
+
+### Short Codes
+- **S** = Single (S20 = Single 20)
+- **D** = Double (D16 = Double 16)  
+- **T** = Triple (T20 = Triple 20)
+- **OB** = Outer Bull (25 points)
+- **DB** = Double Bull (50 points)
+- **MISS** = Complete miss (0 points)
+
 ## Key Features Demonstrated
 
 1. **Customizable Accuracy**: Shows the accuracy setup at game start
-2. **Default t20 Target**: Notice the "[default: t20]" prompt and "Aiming for t20 (default)" messages
-3. **Invalid Input Handling**: Notice how `t60` was rejected and didn't consume a dart
-4. **Realistic Misses**: Aiming for `t20` hit `s1` (adjacent segment) and `s5` (adjacent segment) - no complete misses for triples
-5. **Complete Miss Only for Doubles**: Notice the miss only occurred when aiming for `d20` (double)
-6. **Bust Detection**: Game properly handles scoring and win conditions
-7. **Double Finish**: Game ends only when finishing on a double
+2. **Streamlined Interface**: Clean `Dart 1:` prompts instead of verbose text
+3. **Concise Results**: `t20 → S20 (20) | 481` format shows everything at a glance
+4. **Invalid Input Handling**: Notice how `t60` was rejected and didn't consume a dart
+5. **Realistic Bull Misses**: Aiming for `db` hit `S14` (random single when missing bull region entirely)
+6. **Complete Miss Only for Doubles**: Notice the miss only occurred when aiming for `d20` (double)
+7. **Double Bull Finish**: Game can be finished with Double Bull (50 points) as shown in the example
+8. **Bust Detection**: Game properly handles scoring and win conditions
+9. **Proper Finish Logic**: Score 321 shows "Difficult" (odd number), score 50 shows as finishable
 
 ## Technical Implementation
 
@@ -161,6 +152,8 @@ Thanks for playing!
 - **Probability Engine**: Weighted random selection for realistic gameplay
 - **Input Parsing**: Regex-based validation with clear error messages
 - **Game State Management**: Proper score tracking and turn management
+- **Realistic Bull Physics**: Two-tier miss system for bulls (close miss vs complete miss of bull region)
+- **Complete Finish Logic**: Correctly identifies all valid finishes (even numbers 2-40 and Double Bull 50)
 
 ## Contributing
 

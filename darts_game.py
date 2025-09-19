@@ -197,8 +197,8 @@ class DartsGame:
         if remaining_score > 170:  # Maximum possible finish (T20, T20, DB)
             return True
         
-        # Check if it's an even number (can finish with double)
-        return remaining_score % 2 == 0 and remaining_score <= 40
+        # Check if it's an even number (can finish with double) or 50 (double bull)
+        return (remaining_score % 2 == 0 and remaining_score <= 40) or remaining_score == 50
     
     def apply_score(self, hit_type: str, hit_number: int, points: int) -> bool:
         """Apply score and check for bust. Returns True if valid, False if bust"""
