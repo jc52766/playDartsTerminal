@@ -6,6 +6,7 @@ A realistic darts simulation with accuracy-based gameplay
 
 import random
 import re
+import math
 from typing import Dict, List, Tuple, Optional
 
 class DartsGame:
@@ -22,7 +23,7 @@ class DartsGame:
         # Game state
         self.score = 501
         self.darts_thrown = 0
-        self.turn_darts = 0
+        self.turn_number = 1
         self.game_over = False
         
     def _create_adjacency_map(self) -> Dict[int, List[int]]:
@@ -237,7 +238,7 @@ class DartsGame:
         turn_results = []
         turn_points = []
         
-        print(f"\nTurn {(self.darts_thrown // 3) + 1} | Score: {self.score}")
+        print(f"\nTurn {self.turn_number} | Score: {self.score}")
         
         dart = 0
         while dart < 3:
@@ -300,13 +301,13 @@ class DartsGame:
                 total_points_scored = 501 - self.score  # Should be 501 since score is 0
                 average_per_dart = total_points_scored / self.darts_thrown
                 three_dart_average = average_per_dart * 3
-                total_turns = (self.darts_thrown + 2) // 3  # Round up for partial turns
+                total_turns = self.darts_thrown / 3  # Decimal representation of turns
                 
                 print(f"\n📊 GAME STATISTICS:")
                 print(f"Total darts thrown: {self.darts_thrown}")
                 print(f"Average per dart: {average_per_dart:.2f} points")
                 print(f"3-dart average: {three_dart_average:.2f} points")
-                print(f"Total turns: {total_turns}")
+                print(f"Total turns: {total_turns:.2f}")
                 break
         
         # Turn summary with total
@@ -320,6 +321,9 @@ class DartsGame:
                     print(f"Can finish: {self.score}")
                 else:
                     print(f"Difficult: {self.score}")
+            
+            # Increment turn number for next turn
+            self.turn_number += 1
     def _format_hit_short(self, hit_type: str, hit_number: int) -> str:
         """Format hit for concise display"""
         if hit_number == 25:
