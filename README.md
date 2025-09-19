@@ -7,11 +7,6 @@ A realistic terminal-based darts simulation game that follows proper 501 darts r
 - **Authentic 501 Darts Rules**: Start with 501 points, must finish on a double
 - **Customizable Accuracy**: Set your own accuracy percentages for singles, doubles, and triples
 - **Smart Miss Patterns**: When you miss, you hit nearby segments on the dartboard (not random areas)
-- **Realistic Miss Logic**: Singles and triples never miss the board entirely (only doubles can)
-- **Proper Turn Management**: 3 darts per turn with bust detection
-- **Input Validation**: Invalid inputs don't consume darts - you can re-enter your aim
-- **Complete Game Flow**: Score tracking, turn summaries, and win conditions
-- **Streamlined Output**: Clean, concise display that's easy to follow
 
 ## Demo
 
@@ -55,16 +50,6 @@ At game start, you can set your own accuracy percentages (1-100%) for each targe
 - **Triples accuracy**: How often you hit triples when aiming for them [default: 10%]
 
 Simply press Enter to use the defaults, or enter your own percentages to customize the difficulty.
-
-### Realistic Miss Patterns
-When you miss your target, the game simulates realistic dart throws:
-- **Adjacent Segments**: Most likely to hit segments next to your target (e.g., aiming for 20 might hit 1 or 5)
-- **Same Segment Different Multiplier**: Might hit single 20 when aiming for triple 20
-- **Bulls Miss Logic**: When missing bulls, you either hit the other bull (close miss) or any random single 1-20 (complete miss of bull region)
-- **Complete Miss**: Only possible when aiming for regular doubles (narrow outer ring)
-
-### Dartboard Layout
-The dartboard segments in clockwise order: 20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5
 
 ## Example Gameplay
 
