@@ -299,12 +299,20 @@ class DartsGame:
                 
                 # Calculate and display game statistics
                 total_points_scored = 501 - self.score  # Should be 501 since score is 0
-                average_per_dart = total_points_scored / self.darts_thrown
+                
+                # Calculate darts for statistics (professional darts convention)
+                # Each completed turn (that didn't finish the game) counts as 3 darts
+                # Final turn only counts actual darts thrown
+                completed_turns = self.turn_number - 1  # Turns before the final turn
+                darts_in_final_turn = ((self.darts_thrown - 1) % 3) + 1  # Actual darts in final turn
+                darts_for_stats = (completed_turns * 3) + darts_in_final_turn
+                
+                average_per_dart = total_points_scored / darts_for_stats
                 three_dart_average = average_per_dart * 3
-                total_turns = self.darts_thrown / 3  # Decimal representation of turns
+                total_turns = darts_for_stats / 3  # Decimal representation of turns
                 
                 print(f"\n📊 GAME STATISTICS:")
-                print(f"Total darts thrown: {self.darts_thrown}")
+                print(f"Total darts thrown: {darts_for_stats}")
                 print(f"Average per dart: {average_per_dart:.2f} points")
                 print(f"3-dart average: {three_dart_average:.2f} points")
                 print(f"Total turns: {total_turns:.2f}")
