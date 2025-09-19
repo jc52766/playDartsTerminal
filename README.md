@@ -13,6 +13,12 @@ A realistic terminal-based darts simulation game that follows proper 501 darts r
 - **Complete Game Flow**: Score tracking, turn summaries, and win conditions
 - **Streamlined Output**: Clean, concise display that's easy to follow
 
+## Demo
+
+[![asciicast](https://asciinema.org/a/dgUz4EPjfRp7zdTGJ76Qzk7Y1.svg)](https://asciinema.org/a/dgUz4EPjfRp7zdTGJ76Qzk7Y1)
+
+*Click to watch the interactive terminal recording - showing accuracy setup, gameplay flow, and scoring*
+
 ## Installation & Running
 
 1. Ensure you have Python 3.6+ installed
