@@ -130,22 +130,22 @@ class DartsGame:
                 if random.random() < self.accuracy['single']:
                     return ('single', 25, 25)
                 else:
-                    # Miss outer bull - could hit double bull, single segments, or miss board
+                    # Miss outer bull - could hit double bull or adjacent segments (never miss board entirely)
                     miss_options = [
                         ('double', 25, 50),  # Hit inner bull instead
                         ('single', 6, 6), ('single', 13, 13), ('single', 4, 4), ('single', 18, 18),  # Adjacent segments
-                        ('miss', 0, 0)  # Complete miss
+                        ('single', 6, 6), ('single', 13, 13), ('single', 4, 4), ('single', 18, 18),  # Weight adjacent segments more
                     ]
                     return random.choice(miss_options)
             else:  # Double bull
                 if random.random() < self.accuracy['double']:
                     return ('double', 25, 50)
                 else:
-                    # Miss double bull - likely hit outer bull or adjacent segments
+                    # Miss double bull - likely hit outer bull or adjacent segments (never miss board entirely)
                     miss_options = [
                         ('single', 25, 25),  # Hit outer bull instead
-                        ('single', 6, 6), ('single', 13, 13), ('single', 4, 4), ('single', 18, 18),
-                        ('miss', 0, 0)
+                        ('single', 25, 25),  # Weight outer bull more
+                        ('single', 6, 6), ('single', 13, 13), ('single', 4, 4), ('single', 18, 18),  # Adjacent segments
                     ]
                     return random.choice(miss_options)
         
