@@ -295,6 +295,18 @@ class DartsGame:
             if self.score == 0:
                 self.game_over = True
                 print(f"\n🎯 GAME OVER! Finished with {hit_short}! ({self.darts_thrown} darts)")
+                
+                # Calculate and display game statistics
+                total_points_scored = 501 - self.score  # Should be 501 since score is 0
+                average_per_dart = total_points_scored / self.darts_thrown
+                three_dart_average = average_per_dart * 3
+                total_turns = (self.darts_thrown + 2) // 3  # Round up for partial turns
+                
+                print(f"\n📊 GAME STATISTICS:")
+                print(f"Total darts thrown: {self.darts_thrown}")
+                print(f"Average per dart: {average_per_dart:.2f} points")
+                print(f"3-dart average: {three_dart_average:.2f} points")
+                print(f"Total turns: {total_turns}")
                 break
         
         # Turn summary with total
