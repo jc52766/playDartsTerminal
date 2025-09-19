@@ -235,6 +235,7 @@ class DartsGame:
         """Play a complete turn (up to 3 darts)"""
         turn_start_score = self.score
         turn_results = []
+        turn_points = []
         
         print(f"\nTurn {(self.darts_thrown // 3) + 1} | Score: {self.score}")
         
@@ -264,6 +265,7 @@ class DartsGame:
             if hit_type == 'miss':
                 result_str = f"{user_input} → MISS (0)"
                 turn_results.append("MISS (0)")
+                turn_points.append(0)
             else:
                 hit_short = self._format_hit_short(hit_type, hit_number)
                 if (hit_type, hit_number) == (target_type, target_number):
@@ -272,6 +274,7 @@ class DartsGame:
                     result_str = f"{user_input} → {hit_short} ({points})"
                 
                 turn_results.append(f"{hit_short} ({points})")
+                turn_points.append(points)
             
             # Apply score
             if points > 0:
@@ -293,9 +296,10 @@ class DartsGame:
                 print(f"\n🎯 GAME OVER! Finished with {hit_short}! ({self.darts_thrown} darts)")
                 break
         
-        # Turn summary
+        # Turn summary with total
         if not self.game_over:
-            print(f"Turn: {' | '.join(turn_results)}")
+            turn_total = sum(turn_points)
+            print(f"Turn: {' | '.join(turn_results)} = {turn_total}")
             
             # Only show finish status for scores in finishing range (2-170)
             if 2 <= self.score <= 170:
