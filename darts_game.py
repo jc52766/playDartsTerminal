@@ -282,7 +282,8 @@ class DartsGame:
         if not self.game_over:
             print(f"Turn: {' | '.join(turn_results)}")
             
-            if self.score <= 170:
+            # Only show finish status for scores in finishing range (2-170)
+            if 2 <= self.score <= 170:
                 if self.is_valid_finish(self.score):
                     print(f"Can finish: {self.score}")
                 else:

@@ -102,7 +102,6 @@ Dart 1: db → S14 (14) | 396
 Dart 2: db → OB (25) | 371
 Dart 3: ob → DB (50) | 321
 Turn: S14 (14) | OB (25) | DB (50)
-Difficult: 321
 
 Press Enter to continue to next turn...
 
@@ -143,7 +142,7 @@ The game uses a clean, streamlined output format:
 6. **Complete Miss Only for Doubles**: Notice the miss only occurred when aiming for `d20` (double)
 7. **Double Bull Finish**: Game can be finished with Double Bull (50 points) as shown in the example
 8. **Bust Detection**: Game properly handles scoring and win conditions
-9. **Proper Finish Logic**: Score 321 shows "Difficult" (odd number), score 50 shows as finishable
+9. **Smart Finish Status**: Only shows finish status for scores 2-170; high scores like 321 don't show confusing messages
 
 ## Technical Implementation
 
