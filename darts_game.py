@@ -281,6 +281,7 @@ class DartsGame:
                 if not self.apply_score(hit_type, hit_number, points):
                     print(f"{result_str} | BUST! → {turn_start_score}")
                     self.score = turn_start_score  # Reset to start of turn
+                    self.darts_thrown += 1  # Increment for the dart that caused the bust
                     break
                 else:
                     print(f"{result_str} | {self.score}")
