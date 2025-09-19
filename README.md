@@ -87,23 +87,17 @@ Dart 2: t20 → T20 (60) | 421
 Dart 3: t20 → S1 (1) | 420
 Turn: S20 (20) | T20 (60) | S1 (1)
 
-Press Enter to continue to next turn...
-
 Turn 2 | Score: 420
 Dart 1: d20 → S5 (5) | 415
 Dart 2: d20 → MISS (0) | 415
 Dart 3: t20 → S5 (5) | 410
 Turn: S5 (5) | MISS (0) | S5 (5)
 
-Press Enter to continue to next turn...
-
 Turn 3 | Score: 410
 Dart 1: db → S14 (14) | 396
 Dart 2: db → OB (25) | 371
 Dart 3: ob → DB (50) | 321
 Turn: S14 (14) | OB (25) | DB (50)
-
-Press Enter to continue to next turn...
 
 ...continuing until you reach a finishable score...
 

@@ -314,9 +314,6 @@ class DartsGame:
         
         while not self.game_over:
             self.play_turn()
-            
-            if not self.game_over:
-                input("\nPress Enter to continue to next turn...")
         
         print("\nThanks for playing!")
 
